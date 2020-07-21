@@ -2,9 +2,7 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
-
 const { REACT_APP_ENV } = process.env;
-
 export default defineConfig({
   hash: true,
   antd: {},
@@ -48,7 +46,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/editorkoni',
             },
             {
               path: '/welcome',
@@ -79,6 +77,12 @@ export default defineConfig({
               component: './ListTableList',
             },
             {
+              name: '拓扑编辑器',
+              icon: 'smile',
+              path: '/editorkoni',
+              component: './EditorKoni',
+            },
+            {
               component: './404',
             },
           ],
@@ -97,11 +101,27 @@ export default defineConfig({
     // ...darkTheme,
     'primary-color': defaultSettings.primaryColor,
   },
+  define: {
+    REACT_APP_ENV: REACT_APP_ENV || false
+  },
   // @ts-ignore
   title: false,
   ignoreMomentLocale: true,
-  proxy: proxy[REACT_APP_ENV || 'dev'],
+  //proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
   },
+  proxy:{
+    '/api': {
+
+      // target: 'http://localhost:8080',
+      target: 'https://sparql.uniprot.org/',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    }
+  },
+  base: '/EditorKoni/',
+  publicPath: '/EditorKoni/',
 });
